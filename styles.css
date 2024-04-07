@@ -1,0 +1,167 @@
+body {
+    background-color: rgb(0, 0, 0);
+    margin: 0; /* Remove default margin */
+    overflow: hidden; /* Prevent scrolling on the entire page */
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    height: calc(100vh - 15vh); /* Set container height to viewport height */
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    color: rgb(244, 244, 244);
+}
+
+.left {
+    display: grid;
+    grid-template-rows: 1fr 6fr;
+    overflow: auto; /* Add scrollbar if content overflows */
+    position: relative; /* Adjust position */
+    z-index: 2; /* Ensure it's above the .end div */
+}
+
+.nav,
+.local {
+    background-color: rgb(36, 36, 36);
+    margin: 10px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    overflow-y: auto; /* Add vertical scrollbar if content overflows */
+    height: calc(100% - 20px); /* Adjust height to fit container minus margin */
+}
+
+.home{
+  display: flex;
+
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  margin:10px;
+  margin-left:20px ;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10px;
+    margin-left: 0;
+    padding-left: 4%;
+    background-color: rgb(36, 36, 36);
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    overflow-y: auto; /* Add vertical scrollbar if content overflows */
+    position: relative; /* Adjust position */
+    z-index: 2; /* Ensure it's above the .end div */
+}
+
+.song-box {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 15px;
+    justify-content: center;
+}
+
+.song {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+}
+
+
+
+.song img{
+    width: 90%;
+    object-fit: cover;
+    border-radius: 10px;
+
+}
+
+
+
+.end {
+    position: fixed; /* Fix the div at the bottom of the viewport */
+    bottom: 0; /* Adjust distance from the bottom */
+    background-color: rgb(0, 0, 0);
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    overflow-y: auto; /* Add vertical scrollbar if content overflows */
+    max-height: calc(100vh - 40px); /* Set maximum height to fit remaining viewport minus margins */
+    width: calc(100% - 20px); /* Adjust width to fit viewport minus margins */
+    margin: 10px;
+}
+.player{
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+
+    padding: 10px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+}
+.current-song{
+    display: flex;
+    align-items: center;
+}
+.song-img{
+    width: 65px;
+    height: 65x;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+@keyframes rotateImage {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Apply the animation to the image when the 'rotate' class is added */
+.rotate {
+    animation: rotateImage 60s linear infinite; /* Adjust duration and timing function as needed */
+}
+.audio-player{
+display: grid;
+grid-template-rows: 1fr 1fr 1fr;
+}
+  .controls {
+    
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+  }
+  
+
+  .progress-bar {
+    position: relative;
+    height: 2px;
+    background-color: #d9ff00;
+  }
+  
+  .progress-bar::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #d9ff00;
+  }
+  
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+  }
+  
