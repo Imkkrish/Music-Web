@@ -143,3 +143,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add additional event listeners and functionality as needed
 });
+// Event listener for updating progress bar as audio plays
+audioPlayerElement.addEventListener('timeupdate', function () {
+    const duration = audioPlayerElement.duration;
+    const currentTime = audioPlayerElement.currentTime;
+    const progress = (currentTime / duration) * 100;
+    progressBar.style.width = progress + '%';
+    // Add rotation class to image element if audio is playing
+    if (!audioPlayerElement.paused) {
+        songImageElement.classList.add('rotate');
+    }
+});
+
+// Event listener to allow seeking in the audio
+progressBar.addEventListener('click', function (e) {
+    const rect = progressBar.getBoundingClientRect();
+    const totalWidth = rect.width;
+    const offsetX = e.clientX - rect.left;
+    const percentage = offsetX / totalWidth;
+    const newTime = percentage * audioPlayerElement.duration;
+    audioPlayerElement.currentTime = newTime;
+    // Add rotation class to image element after seeking
+    songImageElement.classList.add('rotate');
+});
+
+// Event listener to update progress bar during audio playback
+audioPlayerElement.addEventListener('timeupdate', function () {
+    const currentTime = audioPlayerElement.currentTime;
+    const duration = audioPlayerElement.duration;
+    const progress = (currentTime / duration) * 100;
+    progressBar.style.width = progress + '%';
+});
+
