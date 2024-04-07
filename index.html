@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Music Web App</title>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <div class="nav">
+                <div class="home">
+                    <i class="fas fa-home icon"> Home</i>
+                    </div>
+                    <div class=" search">
+                        <input type="text" id="searchInput" placeholder="Search Songs/Artist...">
+                    </div>
+            </div>
+            <div class="local">
+                <h2>Your Library</h2>
+                <div class="song-title">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="title"><h1>Explore</h1></div>
+                <div class="song-box">
+                    <div class="song">
+                        <img src="https://i.scdn.co/image/ab67616d0000b27327c53fb5936805cce850dafd" alt="Sajna Ve">
+                        <audio src="songs/Sajna_Ve.mp3"></audio>
+                        <h4>Sajna Ve</h4>
+                        <p>Vishal Mishra</p>
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/980/Kaise-Hua-From-Kabir-Singh--Hindi-2019-20190613075009-500x500.jpg" alt="Kaise Hua">
+                        <audio src="songs/Kaise_Hua.mp3"></audio>
+                        <h4>Kaise Hua</h4>
+                        <p>Vishal Mishra</p>
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/783/Bana-Sharabi-Trending-Version-Hindi-2023-20230510123753-500x500.jpg" alt="Bana Sarabi">
+                        <audio src="songs/Bana_Sharabi.mp3"></audio>
+                        <h4>Bana Sarabi</h4>
+                        <p>Jubin Nautiyal</p>
+                        
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/927/Tu-Mileya-Hindi-2023-20230331172753-500x500.jpg" alt="Tu Mileya">
+                        <audio src="songs/Tu_Mileya.mp3"></audio>
+                        <h4>Tu Mileya</h4>
+                        <p>Darshan Raval</p>
+                        
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/517/Aziyat-Hindi-2021-20211116065042-500x500.jpg" alt="Aziyat 2.0">
+                        <audio src=""></audio>
+                        <h4>Aziyat 2.0</h4>
+                        <p>Pratyush Dhiman</p>
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/608/Bekhayali-From-Kabir-Singh--Hindi-2019-20190524024538-500x500.jpg" alt="Bekhalyai">
+                        <audio src=""></audio>
+                        <h4>Bekhalyai</h4>
+                        <p>Sachet Tandon</p>
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/620/Aankhon-Se-Batana-Hindi-2022-20220526142609-500x500.jpg" alt="Aankhon Se Batana">
+                        <audio src=""></audio>
+                        <h4>Aankhon Se Batana </h4>
+                        <p>Dikshant</p>
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/734/Champagne-Talk-Hindi-2022-20221008011951-500x500.jpg" alt="Maan Meri Jaan">
+                        <audio src=""></audio>
+                        <h4>Maan Meri Jaan</h4>
+                        <p>King</p>
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/215/Tera-Ban-Jaunga-Remix--Hindi-2020-20200407012836-500x500.jpg" alt="Tera Ban Jaunga">
+                        <audio src=""></audio>
+                        <h4>Tera Ban Jaunga</h4>
+                        <p>Akhil Sachdeva, Tulsi Kumar</p>
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/302/Kabhii-Tumhhe-From-Shershaah--Hindi-2021-20210818153329-500x500.jpg" alt="Kabhii Tumhhe">
+                        <audio src=""></audio>
+                        <h4>Kabhii Tumhhe</h4>
+                        <p>Darshan Raval</p>
+                    </div>
+                    <div class="song">
+                        <img src="https://c.saavncdn.com/014/Dil-Meri-Na-Sune-From-Genius--Hindi-2018-20191216191847-500x500.jpg" alt="Dil Meri Na Sune">
+                        <audio src=""></audio>
+                        <h4>Dil Meri Na Sune</h4>
+                        <p>Atif Aslam</p>
+                    </div>
+                    <div class="song">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273f4843fef4cef40cd84e550ad" alt="Tera Hua">
+                        <audio src=""></audio>
+                        <h4>Tera Hua</h4>
+                        <p>Atif Aslam</p>
+                    </div>
+            </div>
+    </div>
+    </div>
+    <div class="end">
+        <div class="player">
+        <div class="song-details">
+            <div class="current-song">
+                <div class="song-img">
+                    <img src=""  alt="" class="song-img">
+                </div>
+                <div class="details">
+                    <h3 id="song-name" >Song name</h3>
+                    <p id="artist-name">Artist Name</p>
+                </div> 
+        </div>
+    </div>
+        <div class="audio-player">
+            <audio id="audio" src="" ></audio>
+            <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+            <div class="controls">
+                <button id="playpause" class="play" style="display: none;"><i class="fas fa-play"></i></button>
+                <button id="stop" class="stop"><i class="fas fa-pause"></i></button>
+                <button id="Next" class="Next"><i class="fas fa-forward"></i></button>
+                <button id="Repeat" class="Repeat"><i class="fas fa-repeat"></i></button>
+                <button id="Shufflet" class="Shuffle"><i class="fas fa-random"></i></button>
+                <button id="mute" class="volume-up"><i class="fas fa-volume-mute"></i></button>
+            </div>
+            </div>
+            <div class="songs-buttons">
+                
+            
+            
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
