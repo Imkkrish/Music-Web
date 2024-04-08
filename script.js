@@ -5,6 +5,10 @@ const audioPlayerElement = document.querySelector('.audio-player audio');
 const songImageElement = document.querySelector('.song-img img');
 const detailsSection = document.querySelector('.details');
 const searchInput = document.getElementById('searchInput');
+const playPauseButton = document.getElementById('playpause');
+const stopButton = document.getElementById('stop');
+const progressBar = document.getElementById('progress-bar');
+const queueList = document.querySelector('.Queue-list');
 
 // Function to update player with song details
 function updatePlayer(songName, artistName, audioSource, imageUrl) {
@@ -61,8 +65,36 @@ songDivs.forEach(songDiv => {
         
         // Start playing the audio
         audioPlayerElement.play();
+
+        // Show the stop button and hide the play button
+        playPauseButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
+
+        // Remove display:none from progress bar
+        progressBar.style.display = 'block';
+
+        // Add the song to the queue
+        addToQueue(songName, artistName, imageUrl);
     });
 });
+
+// Function to add song to queue
+function addToQueue(songName, artistName, imageUrl) {
+    const queueItem = document.createElement('div');
+    queueItem.classList.add('qbox');
+    queueItem.innerHTML = `
+        <div class="q-img"> <!-- Updated class name -->
+            <img src="${imageUrl}" alt="${songName}" class="q-img"> <!-- Added class attribute -->
+        </div>
+        <div class="qdetails">
+            <h3>${songName}</h3>
+            <p>${artistName}</p>
+        </div>
+    `;
+    // Add the new queue item to the beginning of the queue list
+    queueList.insertBefore(queueItem, queueList.firstChild);
+}
+
 
 // Event listener to remove rotation animation when the audio stops
 audioPlayerElement.addEventListener('ended', function() {
@@ -79,80 +111,12 @@ audioPlayerElement.addEventListener('play', function() {
     songImageElement.classList.add('rotate');
 });
 
-
-
-///
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const audioPlayerElement = document.getElementById('audio');
-    const playPauseButton = document.getElementById('playpause');
-    const stopButton = document.getElementById('stop');
-    const nextButton = document.getElementById('Next');
-    const repeatButton = document.getElementById('Repeat');
-    const shuffleButton = document.getElementById('Shufflet');
-    const muteButton = document.getElementById('mute');
-    const progressBar = document.getElementById('progress-bar');
-
-    // Stop Button
-    stopButton.addEventListener('click', function () {
-        audioPlayerElement.pause();
-        playPauseButton.style.display = 'inline-block';
-        stopButton.style.display = 'none';
-    });
-
-    // Play/Pause Button
-    playPauseButton.addEventListener('click', function () {
-        if (audioPlayerElement.paused) {
-            audioPlayerElement.play();
-            playPauseButton.style.display = 'none';
-            stopButton.style.display = 'inline-block';
-        } else {
-            audioPlayerElement.pause();
-            playPauseButton.style.display = 'inline-block';
-            stopButton.style.display = 'none';
-        }
-    });
-
-    // Update Progress Bar
-    audioPlayerElement.addEventListener('timeupdate', function () {
-        const duration = audioPlayerElement.duration;
-        const currentTime = audioPlayerElement.currentTime;
-        const progress = (currentTime / duration) * 100;
-        progressBar.style.width = progress + '%';
-    });
-
-    // Next Button - Implement your functionality here
-
-    // Repeat Button - Implement your functionality here
-
-    // Shuffle Button - Implement your functionality here
-
-    // Mute Button
-    let isMuted = false;
-    muteButton.addEventListener('click', function () {
-        if (isMuted) {
-            audioPlayerElement.muted = false;
-            isMuted = false;
-        } else {
-            audioPlayerElement.muted = true;
-            isMuted = true;
-        }
-    });
-
-    // Add additional event listeners and functionality as needed
-});
 // Event listener for updating progress bar as audio plays
 audioPlayerElement.addEventListener('timeupdate', function () {
     const duration = audioPlayerElement.duration;
     const currentTime = audioPlayerElement.currentTime;
     const progress = (currentTime / duration) * 100;
     progressBar.style.width = progress + '%';
-    // Add rotation class to image element if audio is playing
-    if (!audioPlayerElement.paused) {
-        songImageElement.classList.add('rotate');
-    }
 });
 
 // Event listener to allow seeking in the audio
@@ -174,4 +138,162 @@ audioPlayerElement.addEventListener('timeupdate', function () {
     const progress = (currentTime / duration) * 100;
     progressBar.style.width = progress + '%';
 });
+
+// Stop Button
+stopButton.addEventListener('click', function () {
+    audioPlayerElement.pause();
+    playPauseButton.style.display = 'inline-block';
+    stopButton.style.display = 'none';
+});
+
+// Play/Pause Button
+playPauseButton.addEventListener('click', function () {
+    if (audioPlayerElement.paused) {
+        audioPlayerElement.play();
+        playPauseButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
+    } else {
+        audioPlayerElement.pause();
+        playPauseButton.style.display = 'inline-block';
+        stopButton.style.display = 'none';
+    }
+});
+
+// Mute Button
+const muteButton = document.getElementById('mute');
+let isMuted = false;
+muteButton.addEventListener('click', function () {
+    if (isMuted) {
+        audioPlayerElement.muted = false;
+        isMuted = false;
+    } else {
+        audioPlayerElement.muted = true;
+        isMuted = true;
+    }
+});
+
+// Add additional event listeners and functionality as needed
+// Function to add song to queue
+function addToQueue(songDiv) {
+    const songName = songDiv.querySelector('h4').textContent;
+    const artistName = songDiv.querySelector('p').textContent;
+    const audioSource = songDiv.querySelector('audio').src;
+    const imageUrl = songDiv.querySelector('img').src;
+
+    const queueItem = document.createElement('div');
+    queueItem.classList.add('qbox');
+    queueItem.innerHTML = `
+        <div class="q-img-container">
+            <img src="${imageUrl}" class="q-img">
+        </div>
+        <div class="qdetails">
+            <h3>${songName}</h3>
+            <p>${artistName}</p>
+            <audio src="${audioSource}"></audio> <!-- Add audio source to qbox -->
+        </div>
+    `;
+    // Add the new queue item to the end of the queue list
+    queueList.appendChild(queueItem);
+}
+
+// Function to play song from the queue
+function playFromQueue(songName, artistName, audioSource, imageUrl) {
+    // Update player with song details
+    updatePlayer(songName, artistName, audioSource, imageUrl);
+
+    // Rotate the image when song is played
+    songImageElement.classList.add('rotate');
+
+    // Start playing the audio
+    audioPlayerElement.play();
+
+    // Show the stop button and hide the play button
+    playPauseButton.style.display = 'none';
+    stopButton.style.display = 'inline-block';
+
+    // Remove display:none from progress bar
+    progressBar.style.display = 'block';
+}
+
+// Add click event listener to each song div
+songDivs.forEach(songDiv => {
+    songDiv.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default behavior of link
+
+        // Show details section
+        detailsSection.style.display = 'block';
+
+        // Get song details from clicked song div
+        const songName = this.querySelector('h4').textContent;
+        const artistName = this.querySelector('p').textContent;
+        const audioSource = this.querySelector('audio').src;
+        const imageUrl = this.querySelector('img').src;
+
+        // Add the song to the queue
+        addToQueue(this);
+
+        // Update player with song details
+        updatePlayer(songName, artistName, audioSource, imageUrl);
+
+        // Rotate the image when song is played
+        songImageElement.classList.add('rotate');
+
+        // Start playing the audio
+        audioPlayerElement.play();
+
+        // Show the stop button and hide the play button
+        playPauseButton.style.display = 'none';
+        stopButton.style.display = 'inline-block';
+
+        // Remove display:none from progress bar
+        progressBar.style.display = 'block';
+    });
+});
+
+// Add click event listener to each queue item
+queueList.addEventListener('click', function(event) {
+    const queueItem = event.target.closest('.qbox');
+    if (queueItem) {
+        const songName = queueItem.querySelector('h3').textContent;
+        const artistName = queueItem.querySelector('p').textContent;
+        const audioSource = queueItem.querySelector('audio').src;
+        const imageUrl = queueItem.querySelector('img').src;
+        playFromQueue(songName, artistName, audioSource, imageUrl);
+    }
+});
+
+
+// Function to add song to queue
+function addToQueue(songDiv) {
+    const songName = songDiv.querySelector('h4').textContent;
+    const artistName = songDiv.querySelector('p').textContent;
+    const audioSource = songDiv.querySelector('audio').src;
+    const imageUrl = songDiv.querySelector('img').src;
+
+    // Check if the song is already in the queue
+    const existingQueueItems = document.querySelectorAll('.qbox');
+    for (const item of existingQueueItems) {
+        const qSongName = item.querySelector('h3').textContent;
+        const qArtistName = item.querySelector('p').textContent;
+        if (songName === qSongName && artistName === qArtistName) {
+            return; // Song is already in the queue, so exit the function
+        }
+    }
+
+    // Song is not in the queue, so add it
+    const queueItem = document.createElement('div');
+    queueItem.classList.add('qbox');
+    queueItem.innerHTML = `
+        <div class="q-img-container">
+            <img src="${imageUrl}" class="q-img">
+        </div>
+        <div class="qdetails">
+            <h3>${songName}</h3>
+            <p>${artistName}</p>
+            <audio src="${audioSource}"></audio> <!-- Add audio source to qbox -->
+        </div>
+    `;
+    // Add the new queue item to the end of the queue list
+    queueList.appendChild(queueItem);
+}
 
