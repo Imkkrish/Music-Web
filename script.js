@@ -160,17 +160,30 @@ playPauseButton.addEventListener('click', function () {
 });
 
 // Mute Button
-const muteButton = document.getElementById('mute');
-let isMuted = false;
-muteButton.addEventListener('click', function () {
-    if (isMuted) {
-        audioPlayerElement.muted = false;
-        isMuted = false;
-    } else {
-        audioPlayerElement.muted = true;
-        isMuted = true;
-    }
+const muteButtons = document.querySelectorAll('.volume-mute');
+
+muteButtons.forEach(muteButton => {
+    muteButton.addEventListener('click', function () {
+        const muteIcon = this.querySelector('i');
+        const isMuted = audioPlayerElement.muted;
+
+        if (isMuted) {
+            // Unmute the audio
+            audioPlayerElement.muted = false;
+            // Change icon to volume up
+            muteIcon.classList.remove('fa-volume-mute');
+            muteIcon.classList.add('fa-volume-up');
+            
+        } else {
+            // Mute the audio
+            audioPlayerElement.muted = true;
+            // Change icon to mute
+            muteIcon.classList.remove('fa-volume-up');
+            muteIcon.classList.add('fa-volume-mute');
+        }
+    });
 });
+
 
 // Add additional event listeners and functionality as needed
 // Function to add song to queue
@@ -214,6 +227,7 @@ function playFromQueue(songName, artistName, audioSource, imageUrl) {
     // Remove display:none from progress bar
     progressBar.style.display = 'block';
 }
+
 
 // Add click event listener to each song div
 songDivs.forEach(songDiv => {
@@ -263,7 +277,7 @@ queueList.addEventListener('click', function(event) {
 });
 
 
-// Function to add song to queue
+// Function to add song to queue (LIFO)
 function addToQueue(songDiv) {
     const songName = songDiv.querySelector('h4').textContent;
     const artistName = songDiv.querySelector('p').textContent;
@@ -293,7 +307,206 @@ function addToQueue(songDiv) {
             <audio src="${audioSource}"></audio> <!-- Add audio source to qbox -->
         </div>
     `;
-    // Add the new queue item to the end of the queue list
-    queueList.appendChild(queueItem);
+
+    // Add the new queue item to the beginning of the queue list
+    queueList.insertBefore(queueItem, queueList.firstChild);
 }
+
+// Global variable to keep track of the current song index
+let currentSongIndex = -1; // Initialize with -1 to indicate no current song
+
+// Function to play the next song
+function playNextSong() {
+    // Get all the queue items
+    const queueItems = document.querySelectorAll('.qbox');
+
+    // Increment the current song index
+    currentSongIndex++;
+
+    // If the current song index exceeds the number of songs in the queue, reset it to 0
+    if (currentSongIndex >= queueItems.length) {
+        currentSongIndex = 0;
+    }
+
+    // Get the next song
+    const nextSong = queueItems[currentSongIndex];
+
+    // Play the next song
+    const songName = nextSong.querySelector('h3').textContent;
+    const artistName = nextSong.querySelector('p').textContent;
+    const audioSource = nextSong.querySelector('audio').src;
+    const imageUrl = nextSong.querySelector('img').src;
+    playFromQueue(songName, artistName, audioSource, imageUrl);
+}
+
+// Event listener for the forward button
+document.getElementById('Next').addEventListener('click', playNextSong);
+
+// Function to play song from the queue
+function playFromQueue(songName, artistName, audioSource, imageUrl) {
+    // Update player with song details
+    updatePlayer(songName, artistName, audioSource, imageUrl);
+
+    // Rotate the image when song is played
+    songImageElement.classList.add('rotate');
+
+    // Start playing the audio
+    audioPlayerElement.play();
+
+    // Show the stop button and hide the play button
+    playPauseButton.style.display = 'none';
+    stopButton.style.display = 'inline-block';
+
+    // Remove display:none from progress bar
+    progressBar.style.display = 'block';
+}
+
+// Event listener to play next song when the current song ends
+audioPlayerElement.addEventListener('ended', function() {
+    playNextSong();
+});
+
+
+// Get a reference to the repeat 1 button
+const repeatOneButton = document.getElementById('repeat-one');
+
+// Variable to track the state of the button
+let repeatState = 0; // 0: Initial state, 1: All songs repeat, 2: Repeat 1
+
+// Add an event listener to the repeat 1 button
+repeatOneButton.addEventListener('click', function() {
+    // Toggle the repeatState variable
+    repeatState = (repeatState + 1) % 3;
+
+    // Update the button appearance based on the repeatState
+    switch (repeatState) {
+        case 0:
+            // Initial state
+            repeatOneButton.style.color = ''; // Reset color to default
+            repeatOneButton.innerHTML = '<i class="fas fa-sync"></i>'; // Reset icon
+            break;
+        case 1:
+            // All songs repeat state
+            repeatOneButton.style.color = 'red'; // Change color to red
+            repeatOneButton.innerHTML = '<i class="fas fa-sync"></i>'; // Reset icon
+            break;
+        case 2:
+            // Repeat 1 state
+            repeatOneButton.style.color = 'green'; // Change color to green
+            repeatOneButton.innerHTML = '<i class="fas fa-sync"></i> 1'; // Set icon with text '1'
+            break;
+    }
+
+    // Add your logic for handling the different repeat states here
+    switch (repeatState) {
+        case 0:
+            console.log('Initial state: No repeat');
+            break;
+        case 1:
+            console.log('All songs repeat');
+            break;
+        case 2:
+            console.log('Repeat 1');
+            break;
+    }
+});
+
+
+
+// Global variable to keep track of the repeat mode
+let repeatMode = 'none'; // Possible values: 'none', 'all', 'one'
+
+// Add an event listener to the repeat 1 button
+repeatOneButton.addEventListener('click', function() {
+    // Toggle the repeat mode
+    switch (repeatMode) {
+        case 'none':
+            // Change to repeat all
+            repeatMode = 'all';
+            repeatOneButton.style.color = 'red'; // Change color to red
+            repeatOneButton.innerHTML = '<i class="fas fa-sync"></i>'; // Reset icon
+            break;
+        case 'all':
+            // Change to repeat one
+            repeatMode = 'one';
+            repeatOneButton.style.color = 'green'; // Change color to green
+            repeatOneButton.innerHTML = '<i class="fas fa-sync"></i> 1'; // Set icon with text '1'
+            break;
+        case 'one':
+            // Change to no repeat
+            repeatMode = 'none';
+            repeatOneButton.style.color = ''; // Reset color to default
+            repeatOneButton.innerHTML = '<i class="fas fa-sync"></i>'; // Reset icon
+            break;
+    }
+
+    // Log the current repeat mode
+    console.log('Repeat mode:', repeatMode);
+});
+
+// Function to play the next song
+function playNextSong() {
+    // Get all the queue items
+    const queueItems = document.querySelectorAll('.qbox');
+
+    // Increment the current song index
+    currentSongIndex++;
+
+    // Check if repeat mode is 'one' and reset index if needed
+    if (repeatMode === 'one') {
+        if (currentSongIndex >= queueItems.length) {
+            currentSongIndex = 0;
+        }
+    } else {
+        // Check if the current song index exceeds the number of songs in the queue
+        if (currentSongIndex >= queueItems.length) {
+            // Reset the current song index based on the repeat mode
+            if (repeatMode === 'none') {
+                // Stop playback if repeat mode is 'none'
+                stopPlayback();
+                return;
+            } else {
+                // Reset index to 0 if repeat mode is 'all'
+                currentSongIndex = 0;
+            }
+        }
+    }
+
+    // Get the next song
+    const nextSong = queueItems[currentSongIndex];
+
+    // Play the next song
+    const songName = nextSong.querySelector('h3').textContent;
+    const artistName = nextSong.querySelector('p').textContent;
+    const audioSource = nextSong.querySelector('audio').src;
+    const imageUrl = nextSong.querySelector('img').src;
+    playFromQueue(songName, artistName, audioSource, imageUrl);
+}
+
+//
+
+document.addEventListener("DOMContentLoaded", function() {
+    const queueButton = document.getElementById("queueButton");
+    const crossButton = document.getElementById("crossButton");
+    const localDiv = document.querySelector(".local");
+    const navDiv = document.querySelector(".nav");
+    const rightDiv = document.querySelector(".right");
+
+    queueButton.addEventListener("click", function() {
+        localDiv.style.width = "100%";
+        localDiv.style.display = "block";
+        navDiv.style.display = "none";
+        rightDiv.style.display = "none";
+        crossButton.style.display = "block"; // Make cross button visible
+    });
+
+    crossButton.addEventListener("click", function() {
+        localDiv.style.display = "none"; // Hide local div
+        navDiv.style.display = "block"; // Make nav div visible
+        rightDiv.style.display = "block"; // Make right div visible
+        crossButton.style.display = "none"; // Hide cross button
+    });
+});
+
+
 
