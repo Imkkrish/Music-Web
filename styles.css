@@ -337,7 +337,7 @@ grid-template-rows: 1fr ;
   .container {
     display: grid;
     grid-template-columns:1fr;
-    height: calc(100vh - 15vh);
+    height: calc(100vh - 20vh);
   }
     
   .left, .right {
@@ -363,7 +363,7 @@ grid-template-rows: 1fr ;
   }
 
   .local{
-    max-height:calc(100vh - 15vh);
+    max-height:calc(100vh - 20vh);
     margin: 10px;
     max-width: calc(100vw - 20px);
 
